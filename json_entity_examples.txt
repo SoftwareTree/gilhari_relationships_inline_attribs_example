@@ -1,0 +1,20 @@
+A D object with one E object such that attributes of E would be stored INLINE with the attributes of the containing D object in the database table:
+
+{"dId":1,"dString":"dString_1","dE":{"eId":100,"eString":"eString_100"}}
+
+POST body for the above example:
+---------------------------------
+{"entity":{{"dId":1,"dString":"dString_1","dE":{"eId":100,"eString":"eString_100"}}}
+
+Curl command for the above example:
+-----------------------------------
+curl -X POST  http://localhost:80/jdx/v1/D
+  -H "Content-Type: application/json"  -H "cache-control: no-cache" -d "{\"entity\":{\"dId\":1,\"dString\":\"dString_1\",\"dE\":{\"eId\":100,\"eString\":\"eString_100\"}}}"
+
+
+For GET request:
+----------------
+
+http://localhost:8081/gilhari/v1/D
+http://localhost:8081/gilhari/v1/D?deep=false
+http://localhost:8081/gilhari/v1/A?filter=jdxObject.aE.eId=100

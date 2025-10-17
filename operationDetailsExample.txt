@@ -1,0 +1,129 @@
+Relationships example:
+
+For GraphQL Semantics:
+
+In the Body of a GET request:
+
+
+// Example 1 (projections) for a query
+
+{
+    "operationDetails": [
+        {
+            "opType": "projections",
+            "projectionsDetails": [
+                {
+                    "type": "D",
+                    "attribs": [
+                        "dId",
+                        "dString"
+                     
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+
+// Example 2 (projections) for a query
+
+{
+    "operationDetails": [
+        {
+            "opType": "projections",
+            "projectionsDetails": [
+                {
+                    "type": "D",
+                    "attribs": [
+                        "dId",
+                        "dString",
+                        "dE.eId"                
+                    ]
+                }
+
+            ]
+        }
+    ]
+}
+
+
+// Example 3 (filters) for a query
+
+{
+    "operationDetails": [
+        {
+            "opType": "filters",
+            "predicates": [
+                {
+                    "type": "D",
+                    "predicate": "dE_eId > 100"
+                }
+            ]
+        }
+    ]
+}
+
+
+// Example 4 (projections, filters) for a query
+
+{
+    "operationDetails": [
+        {
+            "opType": "projections",
+            "projectionsDetails": [
+                {
+                    "type": "D",
+                    "attribs": [
+                        "dId",
+                        "dString",
+                        "dE.eId"
+                   
+                    ]
+                }
+
+            ]
+        },
+        {
+            "opType": "filters",
+            "predicates": [
+                {
+                    "type": "D",
+                    "predicate": "dString > 'dString_1'"
+                }
+            ]
+        }
+    ]
+}
+
+
+
+// Example 5 (projections, filters) for a query
+
+{
+    "operationDetails": [
+        {
+            "opType": "projections",
+            "projectionsDetails": [
+                {
+                    "type": "D",
+                    "attribs": [
+                        "dId",
+                        "dE.eId"
+                   
+                    ]
+                }
+
+            ]
+        },
+        {
+            "opType": "filters",
+            "predicates": [
+                {
+                    "type": "D",
+                    "predicate": "dE_eId > 100"
+                }
+            ]
+        }
+    ]
+}

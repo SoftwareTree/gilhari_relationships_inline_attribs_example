@@ -1,0 +1,20 @@
+These are some example of the body entity in Postman commands:
+
+For a POST request http://localhost:8081/gilhari/v1/A/
+
+{"entity": {"dId": 1, "dString": "dString_1", "dE": {"eId": 100, "eString": "eString_100"}
+           } 
+}
+
+{"entity": {"dId": 2, "dString": "dString_2" "dE": {"eId": 200, "eString": "eString_100"}
+           } 
+}
+
+---------------------------------------------------------------------
+
+For a GET/access request http://localhost:8081/gilhari/v1/D/access?attribute=dE
+the following could be the entity in the body. No need to specify the non-key attributes:
+
+{"entity": {"dId": 1}}
+
+-------------------------------------------------------------------------

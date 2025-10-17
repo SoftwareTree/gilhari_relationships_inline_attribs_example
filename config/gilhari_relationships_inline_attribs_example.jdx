@@ -1,0 +1,47 @@
+JDX_DATABASE JDX:jdbc:sqlite:.\config\json_example_relationships_inline_attribs.db;USER=sa;PASSWORD=sa;JDX_DBTYPE=SQLITE;DEBUG_LEVEL=5;
+JDBC_DRIVER org.sqlite.JDBC
+
+// Please see JDX_DATABASE_JDBC_DRIVER_Specification_Guide (.md or .html) file for 
+// a guide to use different databases (e.g., Postgres or MySQL) in the mapping file.
+
+OBJECT_MODEL_OVERVIEW This object model showcases two types of objects (D and E) that demonstrate one-to-one relationship using an **INLINE mapping** feature such that the attribute values of a contained (referenced) object (E) are stored in the same database table as the one used for storing the attribute values of the containing (referencing) object (D) 
+
+JDX_OBJECT_MODEL_PACKAGE com.softwaretree.jdxjsoninlineattribsexample.model
+;
+REM ************************************************************************
+
+// Below is an example of INLINE mapping such that attributes of an instance 
+// of E is stored INLINE in the same table as the attributes of an instance of 
+// the containing D object
+
+CLASS .D TABLE D
+
+   // First declare all the persistent JSON properties using VIRTUAL_ATTRIB specifications
+   VIRTUAL_ATTRIB dId ATTRIB_TYPE int
+   VIRTUAL_ATTRIB dString ATTRIB_TYPE java.lang.String
+
+   // Now provide the rest of the mapping specification for this class
+   PRIMARY_KEY dId  
+   RELATIONSHIP dE REFERENCES .E INLINE AUTO_INSTANTIATE
+   // If the referenced object dE could be null, we need to specify the corresponding 
+   // attributes to be nullable in the underlying table
+   SQLMAP FOR dE.eId NULLABLE
+   SQLMAP FOR dE.eString NULLABLE
+;
+
+// Even though an instance of E is stored INLINE in the same table as the 
+// instance of the containing D object, the mapping specification for 
+// E including its PRIMARY_KEY still needs to be defined.
+// Standalone instances of E objects (not part of a D object) can independetly
+// be stored in and queried from this table.
+CLASS .E TABLE E
+
+   // First declare all the persistent JSON properties using VIRTUAL_ATTRIB specifications
+   VIRTUAL_ATTRIB eId ATTRIB_TYPE int
+   VIRTUAL_ATTRIB eString ATTRIB_TYPE java.lang.String
+   
+   // Now provide the rest of the mapping specification for this class
+   PRIMARY_KEY eId 
+;
+
+

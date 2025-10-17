@@ -1,0 +1,4 @@
+./src/com/softwaretree/jdxjsoninlineattribsexample/model/D.java
+./src/com/softwaretree/jdxjsoninlineattribsexample/model/E.java
+
+
