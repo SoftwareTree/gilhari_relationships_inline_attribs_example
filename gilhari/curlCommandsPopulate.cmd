@@ -2,6 +2,8 @@ REM  A script to invoke some sample curl commands on a Windows machine
 REM  against a running container image of the app-specific Gilhari microservice 
 REM  gilhari_relationships_implicit_attribs_example:1.0.
 REM
+REM  This scripts populates some data but does not delete them.
+REM
 REM  The responses are recorded in a log file (curl.log).
 REM
 REM  Note that these curl commands use a default mapped port number of 80
@@ -9,7 +11,7 @@ REM  even though the port number exposed by the app-specific
 REM  microservice may be different (e.g., 8081) inside the container shell.
 REM
 REM  You may optionally specify a non-default port number as the first 
-REM  command line argument to this script. For example, to spcify a 
+REM  command line argument to this script. For example, to specify a 
 REM  port number of 8899, use the following command:
 REM     curlCommands 8899
 REM
@@ -35,6 +37,19 @@ echo Using PORT number %port% >> curl.log
 echo. >> curl.log
 echo. >> curl.log
 
+REM Check that the Gilhari microservice is up before sending any other requests
+echo ** Check the health of the Gilhari microservice >> curl.log
+curl -fsS "http://localhost:%port%/gilhari/v1/health/check" >> curl.log 2>&1
+if errorlevel 1 (
+    echo. >> curl.log
+    echo The Gilhari microservice is not responding at http://localhost:%port%/gilhari/v1/ >> curl.log
+    echo The Gilhari microservice is not responding at http://localhost:%port%/gilhari/v1/
+    echo Start it first, e.g., gilhari\run_docker_app.cmd, and wait until it is ready.
+    exit /b 1
+)
+echo. >> curl.log
+echo. >> curl.log
+
 echo ** Delete all E objects  to start fresh >> curl.log
 curl -X DELETE "http://localhost:%port%/gilhari/v1/E" >> curl.log
 echo. >> curl.log
@@ -55,7 +70,7 @@ curl -X GET "http://localhost:%port%/gilhari/v1/D"  -H "Content-Type: applicatio
 echo. >> curl.log
 echo. >> curl.log
 
-echo ** Shallow Query of all D objects will still fetch the attribute values of the INLINed E objects stored in the same table row >> curl.log 
+echo ** Shallow Query of all D objects will still fetch the attribute values of the INLINed E objects stored in the same table row >> curl.log
 curl -X GET "http://localhost:%port%/gilhari/v1/D?deep=false"  -H "Content-Type: application/json" >> curl.log
 echo. >> curl.log
 echo. >> curl.log
@@ -75,7 +90,7 @@ curl -X GET "http://localhost:%port%/gilhari/v1/D"  -H "Content-Type: applicatio
 echo. >> curl.log
 echo. >> curl.log
 
-echo ** Shallow Query of all D objects will still fetch the attribute values of the INLINed E objects stored in the same table row >> curl.log 
+echo ** Shallow Query of all D objects will still fetch the attribute values of the INLINed E objects stored in the same table row >> curl.log
 curl -X GET "http://localhost:%port%/gilhari/v1/D?deep=false"  -H "Content-Type: application/json" >> curl.log
 echo. >> curl.log
 echo. >> curl.log
@@ -95,28 +110,8 @@ curl -X GET "http://localhost:%port%/gilhari/v1/D/getAggregate?attribute=dId&agg
 echo. >> curl.log
 echo. >> curl.log
 
-echo ** Query all E objects >> curl.log
+echo ** Query all E objects; nothing should show because all the E objects have been stored INLINE with the corresponsing D objects >> curl.log
 curl -X GET "http://localhost:%port%/gilhari/v1/E"  -H "Content-Type: application/json" >> curl.log
-echo. >> curl.log
-echo. >> curl.log
-
-echo ** Delete all E objects >> curl.log
-curl -X DELETE "http://localhost:%port%/gilhari/v1/E" >> curl.log
-echo. >> curl.log
-echo. >> curl.log
-
-echo ** Query the count of E objects >> curl.log
-curl -X GET "http://localhost:%port%/gilhari/v1/E/getAggregate?attribute=eId&aggregateType=COUNT"  -H "Content-Type: application/json" >> curl.log
-echo. >> curl.log
-echo. >> curl.log
-
-echo ** Delete all D objects (and their referenced E objects)  >> curl.log
-curl -X DELETE "http://localhost:%port%/gilhari/v1/D" >> curl.log
-echo. >> curl.log
-echo. >> curl.log
-
-echo ** Query the count of all D objects >> curl.log
-curl -X GET "http://localhost:%port%/gilhari/v1/D/getAggregate?attribute=dId&aggregateType=COUNT"  -H "Content-Type: application/json" >> curl.log
 echo. >> curl.log
 echo. >> curl.log
 

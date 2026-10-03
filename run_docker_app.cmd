@@ -1,1 +1,0 @@
-docker run  -p 80:8081 gilhari_relationships_inline_attribs_example:1.0
